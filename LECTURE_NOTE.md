@@ -18,7 +18,8 @@ Let $\mathcal{U}=\left\{\left(x_u, p_u\right): u \in(1, \ldots, \mu B)\right\}$ 
 - Then train the model with the pseudo-labels on the same image but this time with strong augmentation.
 - The loss is the coss-entropy between weakly augmented prediction and the strongly augmented prediction.
 
-![Diagram of FixMatch](./figures/diagram_of_FixMatch.png)
+<!-- ![Diagram of FixMatch](./figures/diagram_of_FixMatch.png) -->
+![Diagram of FixMatch](./figures/model.excalidraw.svg)
 
 ### Consistency regularization
 
@@ -52,9 +53,45 @@ Pseudo-labeling is a semi-supervised learning technique where a model is trained
 
 The idea behind pseudo-labeling is that the model can learn from the predicted labels and improve its accuracy by incorporating the additional information from the unlabeled data.
 
-## Algorithm
+## Loss
 
-...
+Supervised Loss $\ell_s$ (standard cross-entropy on weakly-augmented labeled data):
+$$
+\ell_s=\frac{1}{B} \sum_{b=1}^B \mathrm{H}\left(p_b, p_{\mathrm{m}}\left(y \mid \alpha\left(x_b\right)\right)\right)
+$$
+
+Unsupervised Loss $\ell_u$ (consistency regularization on weakly-augmented unlabeled data):
+
+$$
+\ell_u=\frac{1}{\mu B} \sum_{b=1}^{\mu B} \mathbb{1}\left(\max \left(q_b\right) \geq \tau\right) \mathrm{H}\left(\hat{q}_b, p_{\mathrm{m}}\left(y \mid \mathcal{A}\left(u_b\right)\right)\right)
+$$
+
+The final loss is a linear combination of the supervised and unsupervised losses:
+
+$
+\ell_s+\lambda_u \ell_u
+$
+
+### Augmentation
+
+FixMatch leverages two kinds of augmenation: `weak` ($\alpha(\cdot)$) and `strong` ($\mathcal{A}(\cdot)$).
+
+The `weak` augmentation is:
+- Random flip horizontally with a probability of 50%.
+- Random translation image up to 12.5% vertically and horizontally.
+
+The `strong` augmentation is:
+- AutoAugment (https://arxiv.org/abs/1805.09501)
+- Followed by Cutout (https://arxiv.org/abs/1708.04552)
+
+AutoAugment is a already learned by reinforcement augmentation.
+
+### Training parameters
+
+Using SGD with momentum instead of Adam.
+Nesterov momentum not really useful.
+
+Cosine annealing for the scheduler.
 
 ## Results
 
@@ -66,7 +103,6 @@ FixMatch can be further improved by using stronger data augmentation techniques 
 We sould see a maximum accuracy of 94.33% on CIFAR-10 with 250 labeled data points.
 
 And even 88.61% on CIFAR-100 with only 4 labels per class.
-
 
 ## Question ideas
 
