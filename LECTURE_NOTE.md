@@ -4,6 +4,13 @@ This is a lecture note on FixMatch for the 2ModIA project, a semi-supervised lea
 
 The paper is available at [arXiv](https://arxiv.org/abs/2001.07685).
 
+
+- FixMatch first generates pseudo-labels using the model’s predictions on weakly-augmented unlabeled images.
+
+- For a given image, the pseudo-label is only retained if the model produces a high-confidence prediction.
+
+- The model is then trained to predict the pseudo-label when fed a strongly-augmented version of the same image.
+
 ## Base Idea
 
 The paper proposes a simple effective semi-supervised learning (SSL) algorithm, called FixMatch, which combines two common SSL methods, **consistency regularization** and **pseudo-labeling**, to improve model performance using weakly-augmented unlabeled images and strongly-augmented labeled images.
@@ -81,8 +88,9 @@ The `weak` augmentation is:
 - Random translation image up to 12.5% vertically and horizontally.
 
 The `strong` augmentation is:
-- AutoAugment (https://arxiv.org/abs/1805.09501)
-- Followed by Cutout (https://arxiv.org/abs/1708.04552)
+- RandAugment (https://arxiv.org/abs/1805.09501)
+- CTAugment ? (See if and how it's used)
+- Followed by Cutout (https://arxiv.org/abs/1708.04552): Masking part of the image
 
 AutoAugment is a already learned by reinforcement augmentation.
 
@@ -124,3 +132,8 @@ And even 88.61% on CIFAR-100 with only 4 labels per class.
 - Extending FixMatch to handle different types of data, such as graph or tabular data.
 
 - Evaluating the performance of FixMatch on large-scale datasets with millions of unlabeled examples.
+
+
+## References
+
+- Medium Article (Review — FixMatch: Simplifying Semi-Supervised Learning with Consistency and Confidence)[https://sh-tsang.medium.com/review-fixmatch-simplifying-semi-supervised-learning-with-consistency-and-confidence-907ef086a172]
