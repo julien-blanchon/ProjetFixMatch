@@ -46,7 +46,7 @@ class ConvNN(nn.Module):
         x = self.flatten(x)
         x = self.fc_512(x)
         x = self.relu(x)
-        x = self.fc_10(x)
+        # x = self.fc_10(x)
 
         return x
     
