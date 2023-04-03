@@ -75,9 +75,9 @@ $$
 
 The final loss is a linear combination of the supervised and unsupervised losses:
 
-$
-\ell_s+\lambda_u \ell_u
-$
+$$
+\ell_s+ \lambda_u \ell_u
+$$
 
 ### Augmentation
 
@@ -120,7 +120,6 @@ And even 88.61% on CIFAR-100 with only 4 labels per class.
 
 - How can FixMatch be adapted to handle multi-modal or sequential data, such as text or video?
 
-
 ## Future research
 
 - Investigating the application of FixMatch to transfer learning and domain adaptation problems.
@@ -132,7 +131,6 @@ And even 88.61% on CIFAR-100 with only 4 labels per class.
 - Extending FixMatch to handle different types of data, such as graph or tabular data.
 
 - Evaluating the performance of FixMatch on large-scale datasets with millions of unlabeled examples.
-
 
 ## References
 
