@@ -89,7 +89,7 @@ def plot_images(
 def plot_transform(
     images: torch.Tensor, 
     transform: Callable[[torch.Tensor], torch.Tensor], 
-    transform_name: str | None = None) -> Figure:    
+    transform_name: str or None = None) -> Figure:    
 
     assert images.shape[0] >= 4, "Not enough images to plot"
 
