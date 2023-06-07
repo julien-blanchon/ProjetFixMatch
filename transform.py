@@ -1,6 +1,18 @@
 import numpy as np
 import torch
 import cv2
+import torchvision
+
+class Reshape(object):
+    '''
+    Reshape input tensor from (X, 3, H, W) to (X, H, W, 3)
+    '''
+    def __init__(self):
+        pass
+
+    def __call__(self, im):
+        print("reshaping: ",im.shape)
+        return im.transpose(0, 2, 3, 1)
 
 
 class PadandRandomCrop(object):
@@ -12,6 +24,7 @@ class PadandRandomCrop(object):
         self.cropsize = cropsize
 
     def __call__(self, im):
+        print("padding: ", im.shape)
         borders = [(self.border, self.border), (self.border, self.border), (0, 0)]
         convas = np.pad(im, borders, mode='reflect')
         H, W, C = convas.shape
@@ -27,6 +40,7 @@ class RandomHorizontalFlip(object):
         self.p = p
 
     def __call__(self, im):
+        print("flipping: ", im.shape)
         if np.random.rand() < self.p:
             im = im[:, ::-1, :]
         return im
@@ -41,24 +55,28 @@ class Resize(object):
         return im
 
 
-class Normalize(object):
+class Normalize(torch.nn.Module):
     '''
     Inputs are pixel values in range of [0, 255], channel order is 'rgb'
     '''
-    def __init__(self, mean, std):
-        self.mean = np.array(mean, np.float32).reshape(1, 1, -1)
-        self.std = np.array(std, np.float32).reshape(1, 1, -1)
+    def __init__(self, mean, std, inplace=False):
+        super().__init__()
+        self.mean = mean
+        self.std = std
+        self.inplace = inplace
 
-    def __call__(self, im):
-        if len(im.shape) == 4:
-            mean, std = self.mean[None, ...], self.std[None, ...]
-        elif len(im.shape) == 3:
-            mean, std = self.mean, self.std
-        im = im.astype(np.float32) / 255.
-        #  im = (im.astype(np.float32) / 127.5) - 1
-        im -= mean
-        im /= std
-        return im
+    def forward(self, tensor: torch.Tensor) -> torch.Tensor:
+        """
+        Args:
+            tensor (Tensor): Tensor image to be normalized.
+
+        Returns:
+            Tensor: Normalized Tensor image.
+        """
+        return torch.nn.functional.normalize(tensor, self.mean, self.std, self.inplace)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(mean={self.mean}, std={self.std})"
 
 
 class ToTensor(object):

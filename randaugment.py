@@ -312,6 +312,7 @@ class RandomAugment(object):
         return [(op, 0.5, self.M) for op in sampled_ops]
 
     def __call__(self, img):
+        print("random augment")
         ops = self.get_random_ops()
         for name, prob, level in ops:
             if np.random.random() > prob: continue
