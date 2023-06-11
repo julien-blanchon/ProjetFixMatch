@@ -180,7 +180,7 @@ strict digraph "./figures/model" {
                     <TABLE BORDER="0" CELLBORDER="1"
                     CELLSPACING="0" CELLPADDING="4">
                     <TR>
-                        <TD ROWSPAN="2">Linear<BR/>depth:1</TD>
+                        <TD ROWSPAN="2">Identity<BR/>depth:1</TD>
                         <TD COLSPAN="2">input:</TD>
                         <TD COLSPAN="2">(64, 512) </TD>
                     </TR>
@@ -206,19 +206,19 @@ strict digraph "./figures/model" {
                     <TABLE BORDER="0" CELLBORDER="1"
                     CELLSPACING="0" CELLPADDING="4">
                     <TR>
-                        <TD ROWSPAN="2">Linear<BR/>depth:1</TD>
+                        <TD ROWSPAN="2">Identity<BR/>depth:1</TD>
                         <TD COLSPAN="2">input:</TD>
                         <TD COLSPAN="2">(64, 512) </TD>
                     </TR>
                     <TR>
                         <TD COLSPAN="2">output: </TD>
-                        <TD COLSPAN="2">(64, 10) </TD>
+                        <TD COLSPAN="2">(64, 512) </TD>
                     </TR>
                     </TABLE>> fillcolor=darkseagreen1]
 	17 [label=<
                     <TABLE BORDER="0" CELLBORDER="1"
                     CELLSPACING="0" CELLPADDING="4">
-                        <TR><TD>output-tensor<BR/>depth:0</TD><TD>(64, 10)</TD></TR>
+                        <TR><TD>output-tensor<BR/>depth:0</TD><TD>(64, 512)</TD></TR>
                     </TABLE>> fillcolor=lightyellow]
 	0 -> 1
 	1 -> 2
