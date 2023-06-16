@@ -15,55 +15,30 @@ from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import datasets
 from torchvision import transforms as T
 
-# class Data():
-#     def __init__(self, batch_size: int = 64, splits: list = [0.90, 0.10]) -> None:
-#         self.batch_size = batch_size
-#         self.trainset = datasets.CIFAR10(root='./data', train=True,
-#                                         download=True, transform=T.ToTensor())
+# random and os
+import random
+import os
 
-#         self.trainset, self.validset = random_split(self.trainset, splits)
+DEFAULT_RANDOM_SEED = 2021
 
-#         self.testset = datasets.CIFAR10(root='./data', train=False,
-#                                        download=True, transform=T.ToTensor())
-                                        
-#         self.trainloader = DataLoader(self.trainset, batch_size=self.batch_size,
-#                                           shuffle=True, num_workers=4)
-
-#         self.validloader = DataLoader(self.validset, batch_size=self.batch_size,
-#                                           shuffle=True, num_workers=4)                                  
-                                       
-#         self.testloader = DataLoader(self.testset, batch_size=self.batch_size,
-#                                          shuffle=True, num_workers=4)
-
-#         self.classes = ('plane', 'car', 'bird', 'cat',
-#            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-
-#     def get_train_loader(self) -> DataLoader:
-#         return self.trainloader
-
-#     def get_valid_loader(self) -> DataLoader:
-#         return self.validloader
-
-#     def get_test_loader(self) -> DataLoader:
-#         return self.testloader
-
-#     def get_classes(self) -> tuple:
-#         return self.classes
+def seedBasic(seed=DEFAULT_RANDOM_SEED):
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
     
-# class DataFixMatch(Data):
-#     def __init__(self, data: Data, batch_size: int = 64, splits: list = [0.90, 0.10]) -> None:
-#         self.batch_size = batch_size
+# torch random seed
+import torch
+def seedTorch(seed=DEFAULT_RANDOM_SEED):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+      
+# basic + tensorflow + torch 
+def seedEverything(seed=DEFAULT_RANDOM_SEED):
+    seedBasic(seed)
+    seedTorch(seed)
 
-#         self.trainset_sup, self.trainset_unsup = random_split(data.trainset, splits)
-
-#         self.trainloader_sup = DataLoader(self.trainset_sup, batch_size=self.batch_size, shuffle=True, num_workers=4)
-#         self.trainloader_unsup = DataLoader(self.trainset_unsup, batch_size=self.batch_size, shuffle=True, num_workers=4)
-
-#     def get_trainsup_loader(self) -> DataLoader:
-#         return self.trainloader_sup
-
-#     def get_trainunsup_loader(self) -> DataLoader:
-#         return self.trainloader_unsup
 
 def plot_images(
     images: torch.Tensor, 
