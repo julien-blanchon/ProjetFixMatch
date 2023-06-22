@@ -36,7 +36,6 @@ def mask(model, weak_unlabeled_data, tau=0.95):
 
         qb = model(weak_unlabeled_data)
 
-        # qb = logits.copy()
         qb = torch.softmax(qb, dim=1)
 
         max_qb, qb_hat = torch.max(qb, dim=1)
@@ -116,7 +115,6 @@ def fixmatch_train(
 
                 # forward pass
                 outputs = model(inputs_all)
-                # outputs = torch.softmax(outputs, dim=1)
 
                 # split labeled and unlabeled outputs
                 labeled_outputs, unlabeled_outputs = outputs[:n_labeled], outputs[n_labeled:]
@@ -135,7 +133,6 @@ def fixmatch_train(
             else:
                 # forward pass
                 labeled_outputs = model(weak_labeled_inputs)
-                # labeled_outputs = torch.softmax(labeled_outputs, dim=1)
 
                 # compute loss
                 labeled_loss = torch.sum(labeled_criterion(labeled_outputs, labels)) / batch_size
