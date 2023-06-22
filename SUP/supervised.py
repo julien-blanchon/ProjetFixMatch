@@ -94,7 +94,7 @@ def supervised_train(
             pbar.set_postfix({
                 "loss": loss.item(),
                 "accuracy": 100 * correct / total,
-                "lr": current_lr.item()
+                "lr": current_lr
             })
 
             if scheduler is not None:
