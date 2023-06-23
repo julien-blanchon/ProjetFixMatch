@@ -164,14 +164,15 @@ def fixmatch_train(
                 "n_unlabeled": running_n_unlabeled,
                 "lr": optimizer.param_groups[0]['lr']
             })
+            # scheduler step
+            if scheduler is not None:
+                scheduler.step()
         
         # update loss
         train_losses.append(running_loss / (i + 1))
         train_accuracies.append(running_accuracy / (i + 1))
 
-        # scheduler step
-        if scheduler is not None:
-            scheduler.step()
+        
 
         
         # Evaluate the model on the test set
