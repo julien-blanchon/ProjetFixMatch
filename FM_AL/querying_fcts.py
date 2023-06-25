@@ -66,8 +66,11 @@ def information_density(
 
         uncertainty = 1 - (qb1 - qb2)
 
+        # get bottom k_samp indices
+        uncert, idx = torch.topk(uncertainty, k=k_samp, dim=0, sorted=True, largest=False)
+        
         # get top k_samp indices
-        uncert, idx = torch.topk(uncertainty, k=k_samp, dim=0, sorted=True)
+        # uncert, idx = torch.topk(uncertainty, k=k_samp, dim=0, sorted=True)
 
         return idx, torch.mean(uncert).item()
     

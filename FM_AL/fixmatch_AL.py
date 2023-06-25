@@ -93,7 +93,7 @@ def fixmatch_train_AL(
 
     epochs_init = 100
     epochs_final = 100
-    epochs_AL = int((fulldata_length - currentdata_length) / data_added_per_epoch)
+    epochs_AL = int((fulldata_length - currentdata_length) / data_added_per_epoch) * 10
     
     epochs = epochs_init + epochs_final + epochs_AL
     
@@ -206,11 +206,11 @@ def fixmatch_train_AL(
                 "lr": optimizer.param_groups[0]['lr']
             })
             # scheduler step
-            if scheduler is not None:
+            if scheduler is not None and (not AL_activated):
                 scheduler.step()
                 
         # AL step, start adding labels after 50 epochs
-        if epoch >= epochs_init and current_prop <= target_prop and epoch <= epochs_init + epochs_AL:
+        if epoch >= epochs_init and current_prop < target_prop and epoch <= epochs_init + epochs_AL and epoch%10 == 0:
             AL_activated = True
             # compute querying
             selected_indices, uncertainty = query_function(model, unlabeled_dataloader, k_samp=data_added_per_epoch, mean=mean, std=std)

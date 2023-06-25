@@ -1,11 +1,6 @@
 # deep learning
 import torch
 import torch.nn as nn
-from IPython.core.display import HTML, SVG
-from IPython.display import display
-
-# plotting
-from torchview import draw_graph
 
 
 # implementation in PyTorch of a simple CNN
@@ -54,11 +49,3 @@ class ConvNN(nn.Module):
         x = self.fc_10(x)
 
         return x
-    
-def display_model(model: nn.Module, batch_size: int, img_shape: tuple, name: str = "model", directory: str = "./figures") -> None:
-    model_graph = draw_graph(model, input_size=[(batch_size, *img_shape)], graph_name=f'{directory}/{name}', graph_dir="LR", device='cpu', expand_nested=True, save_graph=True)
-
-    display(
-        HTML("<h2>Model</h2>"),
-        SVG(model_graph.visual_graph._repr_image_svg_xml())
-    )
